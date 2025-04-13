@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Find the Logic Error</title>
+  <style>
+    body {
+      font-family: monospace;
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 20px;
+    }
+    .code-container {
+      background-color: #2d2d2d;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+    .code-line {
+      padding: 5px 10px;
+      cursor: pointer;
+      white-space: pre;
+      border-left: 4px solid transparent;
+      transition: background 0.2s, border 0.2s;
+    }
+    .code-line:hover {
+      background-color: #3c3c3c;
+    }
+    .correct {
+      background-color: #006400;
+      border-left: 4px solid #00ff00;
+    }
+    .incorrect {
+      background-color: #8b0000;
+      border-left: 4px solid #ff4444;
+    }
+    #mcq {
+      background-color: #2d2d2d;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+    #mcq h3 {
+      color: #ffcc00;
+    }
+    #mcq label {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    #mcq-feedback {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🧠 Click the line that contains the logic error:</h2>
+<div class="code-container" id="code-block"></div>
+<p id="feedback"></p>
+
+<!-- MCQ Section -->
+<div id="mcq" style="margin-top: 20px; display: none;">
+  <h3>🤔 What line of code should replace Line 8?</h3>
+  <form id="mcq-form">
+    <label>
+      <input type="radio" name="mcq" value="1">
+      `var sortedAdults = adults.sort(function(a, b) { return a.age > b.age; });`
+    </label>
+    <label>
+      <input type="radio" name="mcq" value="2">
+      `var sortedAdults = adults.sort(function(a, b) { return b.age - a.age; });`
+    </label>
+    <label>
+      <input type="radio" name="mcq" value="3">
+      `var sortedAdults = adults.sort(function(a, b) { return a.age - b.age; });`
+    </label>
+    <label>
+      <input type="radio" name="mcq" value="4">
+      `var sortedAdults = adults.sort((a, b) => a.age === b.age);`
+    </label><br><br>
+    <button type="submit">Submit Answer</button>
+  </form>
+  <p id="mcq-feedback" style="margin-top: 10px;"></p>
+</div>
+
+<script>
+  var question = {
+    code: [
+      "1. var people = [",
+      "2.   { name: 'Sam', age: 16 },",
+      "3.   { name: 'Taylor', age: 21 },",
+      "4.   { name: 'Jordan', age: 18 }",
+      "5. ];",
+      "6. ",
+      "7. var adults = people.filter(function(p) { return p.age > 18; });",
+      "8. var sortedAdults = adults.sort(function(a, b) { return a.age > b.age; });",
+      "9. ",
+      "10. console.log('Sorted Adults:', sortedAdults);"
+    ],
+    errorLine: 8,
+    options: [
+      ""
+    ],
+    correctOption: 2
+  };
+
+  var codeBlock = document.getElementById("code-block");
+  var feedback = document.getElementById("feedback");
+  var mcq = document.getElementById("mcq");
+  var mcqForm = document.getElementById("mcq-form");
+  var mcqFeedback = document.getElementById("mcq-feedback");
+
+
+  // Display code lines
+  for(let idx in question.code) {
+    let elem = document.createElement("div"); // <div></div>
+    elem.classList.add("code-line"); // <div class="code-line"></div>
+    elem.setAttribute("data-line", idx + 1); // <div class="code-line" data-line="##"></div>
+    elem.innerText = question.code[idx];
+    codeBlock.appendChild(elem);
+  }
+
+  // Handle line click
+  codeBlock.addEventListener("click", function(e) {
+    var clicked = e.target;
+    if (!clicked.classList.contains("code-line")) return;
+
+    // Clear previous highlights and feedback
+    var allLines = document.querySelectorAll(".code-line");
+    allLines.forEach(function(line) {
+      line.classList.remove("correct", "incorrect");
+    });
+
+    var lineNumber = parseInt(clicked.getAttribute("data-line"), 10);
+    if (lineNumber === errorLine) {
+      clicked.classList.add("correct");
+      feedback.textContent = "✅ Correct! Line 8 uses a boolean in sort. Let's fix it...";
+      mcq.style.display = "block"; // Show MCQ
+    } else {
+      clicked.classList.add("incorrect");
+      feedback.textContent = "❌ That’s not it. Try again!";
+      mcq.style.display = "none";
+      mcqFeedback.textContent = "";
+    }
+  });
+
+  // Handle MCQ submission
+  mcqForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    var selected = document.querySelector('input[name="mcq"]:checked');
+    if (!selected) {
+      mcqFeedback.textContent = "⚠️ Please select an option.";
+      mcqFeedback.style.color = "#ffcc00";
+      return;
+    }
+
+    if (selected.value === "3") {
+      mcqFeedback.textContent = "🎉 Correct! Using `a.age - b.age` correctly sorts numerically in ascending order.";
+      mcqFeedback.style.color = "lightgreen";
+    } else {
+      mcqFeedback.textContent = "❌ Not quite. Try again!";
+      mcqFeedback.style.color = "#ff6666";
+    }
+  });
+</script>
+
+</body>
+</html>

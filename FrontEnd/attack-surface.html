@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/sql-wasm.js"></script>
+	<script src="mock.js"></script>
+	<link href="attack-surface.css" rel="stylesheet" />
+	<title>Fremont City Forum</title>
+</head>
+<body>
+	<div id="content">
+	<h1>Fremont City Forum</h1>
+	<div id="search-box">
+		<label>Search By User: <input id="search" /></label><button onclick="search(document.getElementById('search').value)">Search</button>
+	</div>
+	<div id="post-window">
+		<div id="make-account">
+			You need an account to make a new post.<br />
+			<label>Username: <input id="username" /></label><br />
+			<label>Password: <input id="password" type="password" /></label><br />
+			<button onclick="let u=document.getElementById('username'), p=document.getElementById('password'); login(u.value, p.value); u.value=''; p.value='';">Log In</button>
+			<button onclick="let u=document.getElementById('username'), p=document.getElementById('password'); login(u.value, p.value); u.value=''; p.value='';">Sign Up</button>
+		</div>
+		<div id="new-post">
+			<textarea id="text" placeholder="Write a message..."></textarea>
+			<button onclick="sendPost(document.getElementById('text').value); document.getElementById('text').value = '';">Send Post</button>
+		</div>
+		<div id="posts"></div>
+	</div>
+	</div>
+	<script src="backend.js"></script>
+	<script src="frontend.js"></script>
+</body>
+</html>

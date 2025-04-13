@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DDoS Article Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .scroll-area {
+      max-height: 300px;
+      overflow-y: scroll;
+      padding: 20px;
+      border-bottom: 2px solid #ddd;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .question {
+      display: none;
+      padding: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .question.active {
+      display: block;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+    }
+
+    .feedback {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>DDoS Attack Article</h2>
+  <div class="scroll-area" id="article">
+    <p><strong>What Is a DDoS Attack?</strong></p>
+    <p>A Distributed Denial of Service (DDoS) attack is when a website or server is overwhelmed with traffic from multiple sources, making it slow or completely inaccessible. Imagine hundreds of people flooding the entrance of a store so no one else can get in — that’s what a DDoS attack does to an online service.</p>
+    <p><strong>How a DDoS Attack Works</strong></p>
+    <ul>
+      <li>Botnet Creation: The attacker infects thousands of devices with malware, creating a botnet.</li>
+      <li>Traffic Flooding: These devices flood the target with requests.</li>
+      <li>Crash or Overload: The server gets overwhelmed and crashes.</li>
+    </ul>
+    <p><strong>Types of DDoS Attacks</strong></p>
+    <ul>
+      <li>Volumetric Attacks: Flood bandwidth (e.g., UDP floods).</li>
+      <li>Protocol Attacks: Exploit server resources (e.g., SYN floods).</li>
+      <li>Application Layer Attacks: Target apps (e.g., HTTP GET/POST floods).</li>
+    </ul>
+    <p><strong>How to Prevent DDoS Attacks</strong></p>
+    <ul>
+      <li>Use a CDN & WAF to filter traffic.</li>
+      <li>Rate Limiting to restrict requests.</li>
+      <li>Server Redundancy to distribute load.</li>
+      <li>Traffic Analysis Tools for early detection.</li>
+      <li>Strong Network Architecture with backups.</li>
+    </ul>
+    <p><strong>Summary</strong></p>
+    <p>A DDoS attack floods a server with traffic from many sources, aiming to shut it down. Preventing them requires smart network planning and real-time traffic monitoring.</p>
+  </div>
+
+  <div id="quiz">
+    <!-- Questions will be inserted here by JS -->
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "What does DDoS stand for?",
+    options: ["Distributed Domain of Servers", "Direct Denial of Security", "Distributed Denial of Service", "Data Disruption on Servers"],
+    answer: "Distributed Denial of Service"
+  },
+  {
+    question: "What is a botnet?",
+    options: ["A server firewall", "A group of infected devices", "A type of DDoS prevention", "A password manager"],
+    answer: "A group of infected devices"
+  },
+  {
+    question: "Which is NOT a DDoS prevention method?",
+    options: ["Rate Limiting", "Using a CDN", "SQL Injection", "Traffic Analysis Tools"],
+    answer: "SQL Injection"
+  },
+  {
+    question: "What do volumetric attacks target?",
+    options: ["Application logic", "CPU usage", "Bandwidth", "Authentication"],
+    answer: "Bandwidth"
+  },
+  {
+    question: "Why is performing a DDoS attack illegal?",
+    options: [
+      "It involves paying for servers",
+      "It causes intentional harm to systems",
+      "It requires user consent",
+      "It helps websites gain more traffic"
+    ],
+    answer: "It causes intentional harm to systems"
+  }
+];
+
+const quizDiv = document.getElementById('quiz');
+
+questions.forEach((q, i) => {
+  const div = document.createElement('div');
+  div.className = 'question';
+  if (i === 0) div.classList.add('active');
+
+  div.innerHTML = `
+    <h3>Question ${i + 1}</h3>
+    <p>${q.question}</p>
+    ${q.options.map(option => `
+      <label>
+        <input type="radio" name="q${i}" value="${option}"> ${option}
+      </label><br>
+    `).join('')}
+    <button onclick="checkAnswer(${i})">Submit</button>
+    <div class="feedback" id="feedback${i}"></div>
+  `;
+  quizDiv.appendChild(div);
+});
+
+function checkAnswer(i) {
+  const selected = document.querySelector(`input[name="q${i}"]:checked`);
+  const feedback = document.getElementById(`feedback${i}`);
+  if (!selected) {
+    feedback.innerHTML = "<span style='color: orange;'>Please select an answer.</span>";
+    return;
+  }
+
+  if (selected.value === questions[i].answer) {
+    feedback.innerHTML = "<span style='color: green;'>Correct!</span>";
+    const currentQ = document.getElementsByClassName('question')[i];
+    if (i + 1 < questions.length) {
+      const nextQ = document.getElementsByClassName('question')[i + 1];
+      setTimeout(() => {
+        currentQ.classList.remove('active');
+        nextQ.classList.add('active');
+      }, 500);
+    } else {
+      setTimeout(() => {
+        feedback.innerHTML += "<p>🎉 Quiz complete!</p>";
+      }, 500);
+    }
+  } else {
+    feedback.innerHTML = "<span style='color: red;'>Incorrect. Try again.</span>";
+  }
+}
+</script>
+
+</body>
+</html>

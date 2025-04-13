@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Explorer - Login</title>
+  <style>
+    body {
+      background-color: #0d1b2a;
+      color: #e0e1dd;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background-color: #1b263b;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      background-color: #415a77;
+      color: white;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #00ffff;
+      color: #1b263b;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #btn-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+
+    .hint {
+      color: tomato;
+    }
+
+    button:hover {
+      background-color: #00dddd;
+    }
+
+    #password:user-invalid {
+      background: tomato;
+    }
+
+    #password:user-valid {
+      background: lime;
+    }
+
+    #password {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<form class="login-container">
+  <h1>Cyber Explorer</h1>
+  <p>
+    Welcome to Cyber Explorer — your interactive journey through real-world cybersecurity concepts.
+    Learn to think like a hacker, defend like a pro, and challenge your brain with security puzzles!
+  </p>
+
+  <input type="password" placeholder="Password" id="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$">
+  <br>
+  <label class="hint">Must be >5 characters, contain 1 number, 1 uppercase, and lowercase letter</label>
+  <input type="text" placeholder="Username" id="username">
+  <br>
+
+  <div id="btn-row">
+    <button type="button" onclick="clearFields()">Clear</button>
+    <button type="button" onclick="login(event)">Login</button>
+  </div>
+</form>
+
+<script>
+  function login(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const passwordField = document.getElementById("password");
+
+    if (!username || !passwordField.checkValidity()) {
+      alert("⚠️ Please enter a valid username and password.");
+      return;
+    }
+
+    // Save login and go to main.html
+    localStorage.setItem("loggedIn", "true");
+    window.location.href = "main.html";
+  }
+
+  function clearFields() {
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+</script>
+
+</body>
+</html>

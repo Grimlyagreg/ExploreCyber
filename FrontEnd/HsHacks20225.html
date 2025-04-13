@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chemistry Trivia Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #4caf50;
+    }
+
+    .answer-btn {
+      background-color: #ffffff;
+      border: 2px solid #4caf50;
+      padding: 10px;
+      font-size: 1.2em;
+      margin: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 200px;
+    }
+
+    .answer-btn:hover {
+      background-color: #e8f5e9;
+    }
+
+    .correct {
+      background-color: #4caf50 !important;
+      color: white;
+    }
+
+    .wrong {
+      background-color: #f44336 !important;
+      color: white;
+    }
+
+    #score {
+      font-size: 1.2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Chemistry Trivia Game</h1>
+  <p id="question"></p>
+
+  <div id="answers"></div>
+
+  <p id="score">Score: 0</p>
+
+  <script>
+    var questions = [
+      {
+        question: "What is the chemical symbol for water?",
+        options: ["O2", "H2O", "CO2", "H2"],
+        answer: "H2O"
+      },
+      {
+        question: "Which element has the atomic number 1?",
+        options: ["Oxygen", "Hydrogen", "Carbon", "Nitrogen"],
+        answer: "Hydrogen"
+      },
+      {
+        question: "What is the pH of pure water?",
+        options: ["5", "7", "9", "3"],
+        answer: "7"
+      },
+      {
+        question: "What gas do plants take in during photosynthesis?",
+        options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
+        answer: "Carbon Dioxide"
+      },
+      {
+        question: "Which of the following is a noble gas?",
+        options: ["Oxygen", "Neon", "Chlorine", "Sodium"],
+        answer: "Neon"
+      },
+      {
+        question: "What is the atomic number of Carbon?",
+        options: ["6", "12", "8", "14"],
+        answer: "6"
+      },
+      {
+        question: "Which element is the most abundant in Earth's crust?",
+        options: ["Iron", "Oxygen", "Silicon", "Aluminum"],
+        answer: "Oxygen"
+      },
+      {
+        question: "What is the chemical formula for methane?",
+        options: ["CH4", "CO2", "H2O", "O2"],
+        answer: "CH4"
+      },
+      {
+        question: "What element is used in making pencils?",
+        options: ["Lead", "Carbon", "Silicon", "Gold"],
+        answer: "Carbon"
+      },
+      {
+        question: "Which of the following is an example of an acid?",
+        options: ["Lemon juice", "Baking soda", "Water", "Salt"],
+        answer: "Lemon juice"
+      }
+    ];
+
+    var currentQuestion = 0;
+    var score = 0;
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        alert("Game Over! Your final score is " + score + "/" + questions.length);
+        currentQuestion = 0;
+        score = 0;
+        document.getElementById("score").innerText = "Score: " + score;
+      }
+
+      var q = questions[currentQuestion];
+      document.getElementById("question").innerText = q.question;
+
+      var answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = ""; // Clear previous answers
+
+      // Using innerHTML to create answer buttons
+      var buttonsHtml = "";
+      for (var i = 0; i < q.options.length; i++) {
+        buttonsHtml += "<button class='answer-btn' onclick='checkAnswer(\"" + q.options[i] + "\", this)'>" + q.options[i] + "</button><br>";
+      }
+
+      answersDiv.innerHTML = buttonsHtml;
+    }
+
+    function checkAnswer(selected, button) {
+      var correct = questions[currentQuestion].answer;
+
+      if (selected === correct) {
+        score++;
+        button.classList.add("correct");
+      } else {
+        button.classList.add("wrong");
+        highlightCorrectAnswer();
+      }
+
+      // Disable all options after answering
+      var buttons = document.getElementsByClassName("answer-btn");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+      }
+
+      document.getElementById("score").innerText = "Score: " + score;
+
+      // Automatically move to the next question
+      currentQuestion++;
+      setTimeout(showQuestion, 1000); // Delay before showing next question
+    }
+
+    function highlightCorrectAnswer() {
+      var buttons = document.getElementsByClassName("answer-btn");
+      for (var i = 0; i < buttons.length; i++) {
+        if (buttons[i].innerText === questions[currentQuestion].answer) {
+          buttons[i].classList.add("correct");
+        }
+      }
+    }
+
+    // Start the game
+    showQuestion();
+  </script>
+
+</body>
+</html>
